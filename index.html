@@ -3,78 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f6f3ed">
-  <meta name="description" content="Интерактивный путеводитель по интересным странам мира: идеи, маршрут, бюджет и советы путешественникам.">
   <title>Куда дальше — интерактивный путеводитель</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="top">
+
+  <!-- TOPBAR -->
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Куда дальше — на главную"><span class="brand-mark">↗</span> куда дальше<span class="brand-dot">.</span></a>
-    <nav class="top-nav" aria-label="Главная навигация"><a href="#countries">Направления</a><a href="#guide">Путеводитель</a></nav>
-    <button class="saved-top" id="savedToggle" type="button" aria-pressed="false"><span>♡</span> Избранное <b id="savedCount">0</b></button>
+    <a href="#top" class="brand">
+      <span class="brand-mark">↗</span> куда дальше<span class="brand-dot">.</span>
+    </a>
+    <nav class="top-nav">
+      <a href="#countries">Направления</a>
+      <a href="#guide">Путеводитель</a>
+    </nav>
+    
+    <!-- AUTH BUTTONS -->
+    <div class="auth-controls">
+      <div id="guestButtons">
+        <button class="saved-top auth-btn" id="btnLogin" type="button">Войти</button>
+        <button class="saved-top auth-btn" id="btnRegister" type="button">Регистрация</button>
+      </div>
+      <div id="userControls" class="hidden">
+        <span class="user-greeting" id="userGreeting"></span>
+        <button class="saved-top auth-btn logout-btn" id="btnLogout" type="button">Выход</button>
+      </div>
+      <button class="saved-top" id="savedToggle" type="button" aria-pressed="false">
+        <span>♡</span> Избранное <b id="savedCount">0</b>
+      </button>
+    </div>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> ТВОЁ СЛЕДУЮЩЕЕ ПРИКЛЮЧЕНИЕ</p>
-        <h1>Мир больше,<br>чем <em>кажется.</em></h1>
-        <p class="hero-text">Выбери настроение — мы найдём место, которое захочется запомнить.</p>
-        <a class="hero-link" href="#countries">Найти своё направление <span>↓</span></a>
-      </div>
-      <div class="hero-art" aria-label="Иллюстрация горного пейзажа">
-        <div class="sun"></div><div class="mountain mountain-back"></div><div class="mountain mountain-front"></div>
-        <div class="hero-stamp"><span>ПЛАНИРУЙ</span><b>✳</b><span>МЕЧТАЙ</span></div>
-        <div class="hero-caption">36° 14′ N&nbsp;&nbsp; 138° 15′ E<br><span>где-то впереди</span></div>
-      </div>
-    </section>
+  <!-- HERO -->
+  <section class="hero section-wrap">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="eyebrow-line"></span> ТВОЁ СЛЕДУЮЩЕЕ ПРИКЛЮЧЕНИЕ</p>
+      <h1>Мир больше,<br>чем <em>кажется.</em></h1>
+      <p class="hero-text">Выбери настроение — мы найдём место, которое захочется запомнить.</p>
+      <a href="#countries" class="hero-link">Найти своё направление <span>↓</span></a>
+    </div>
+    <div class="hero-art">
+      <div class="sun"></div>
+      <div class="mountain mountain-back"></div>
+      <div class="mountain mountain-front"></div>
+      <div class="hero-stamp"><span>ПЛАНУЙ</span><b>✳</b>МЕЧТАЙ</div>
+      <div class="hero-caption">36° 14′ N&nbsp;&nbsp;138° 15′ E<br><span>где-то впереди</span></div>
+    </div>
+  </section>
 
-    <section class="discovery section-wrap" id="countries">
-      <div class="section-heading">
-        <div><p class="eyebrow">КОЛЛЕКЦИЯ МЕСТ</p><h2>Куда отправимся?</h2></div>
-        <p class="section-note">Вдохновение для путешествий<br>собрано в одном месте.</p>
+  <!-- DISCOVERY -->
+  <section class="discovery section-wrap" id="countries">
+    <div class="section-heading">
+      <div>
+        <p class="section-note">КОЛЛЕКЦИЯ МЕСТ</p>
+        <h2>Куда отправимся?</h2>
       </div>
-      <div class="toolbar">
-        <label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Страна, город или впечатление…" aria-label="Поиск направления"></label>
-        <div class="filter-row" id="filterRow" aria-label="Фильтр по типу отдыха">
-          <button class="filter-chip active" type="button" data-filter="all">Все места</button>
-          <button class="filter-chip" type="button" data-filter="nature">Природа</button>
-          <button class="filter-chip" type="button" data-filter="culture">Культура</button>
-          <button class="filter-chip" type="button" data-filter="city">Города</button>
-        </div>
+      <p class="section-note">Вдохновение для путешествий<br>собрано в одном месте.</p>
+    </div>
+    <div class="toolbar">
+      <div class="search-box">
+        <span>⌕</span>
+        <input type="text" id="searchInput" placeholder="Поиск страны, города или региона…">
       </div>
-      <div class="country-grid" id="countryGrid" aria-live="polite"></div>
-      <p class="empty-state" id="emptyState" hidden>Ничего не нашлось. Попробуй изменить запрос или фильтр.</p>
-    </section>
+      <div class="filter-row" id="filterRow">
+        <button class="filter-chip active" data-filter="all">Все места</button>
+        <button class="filter-chip" data-filter="nature">Природа</button>
+        <button class="filter-chip" data-filter="culture">Культура</button>
+        <button class="filter-chip" data-filter="city">Города</button>
+      </div>
+    </div>
+    <div class="country-grid" id="countryGrid"></div>
+    <p class="empty-state" id="emptyState" hidden>Ничего не нашлось. Попробуй изменить запрос или фильтр.</p>
+  </section>
 
-    <section class="guide-section" id="guide">
-      <div class="section-wrap">
-        <div class="section-heading guide-heading">
-          <div><p class="eyebrow">ТВОЯ ЛИЧНАЯ КАРТА ПУТЕШЕСТВИЯ</p><h2 id="guideTitle">Выбери направление</h2></div>
-          <p class="section-note" id="guideHint">Нажми на карточку страны,<br>чтобы открыть путеводитель.</p>
-        </div>
-        <div class="guide-empty" id="guideEmpty"><span class="empty-globe">◎</span><p>Мир ждёт, когда ты выберешь точку на карте.</p></div>
-        <div class="guide-content" id="guideContent" hidden>
-          <div class="destination-banner" id="destinationBanner"></div>
-          <div class="guide-tabs" id="guideTabs" role="tablist" aria-label="Разделы путеводителя">
-            <button class="guide-tab active" type="button" data-tab="overview" role="tab">Обзор</button>
-            <button class="guide-tab" type="button" data-tab="places" role="tab">Места <span class="tab-count" id="placeCount"></span></button>
-            <button class="guide-tab" type="button" data-tab="safety" role="tab">Безопасность <span class="tab-icon">✳</span></button>
-            <button class="guide-tab" type="button" data-tab="itinerary" role="tab">Маршрут</button>
-            <button class="guide-tab" type="button" data-tab="budget" role="tab">Бюджет</button>
-          </div>
-          <div class="tab-panel" id="tabPanel" role="tabpanel" tabindex="0"></div>
-        </div>
+  <!-- GUIDE -->
+  <section class="guide-section" id="guide">
+    <div class="section-wrap">
+      <div class="guide-heading">
+        <p class="section-note">ТВОЯ ЛИЧНАЯ КАРТА ПУТЕШЕСТВИЯ</p>
+        <h2 id="guideTitle">Выбери направление</h2>
+        <p class="section-note" id="guideHint">Нажми на карточку страны, чтобы открыть путеводитель.</p>
       </div>
-    </section>
+      
+      <div class="guide-empty" id="guideEmpty">
+        <span class="empty-globe">◎</span>
+        Мир ждёт, когда ты выберешь точку на карте.
+      </div>
 
-    <section class="closing section-wrap">
-      <span class="closing-star">✳</span><p>Не откладывай мир на потом.</p><a href="#countries">Выбрать страну ↑</a>
-    </section>
-  </main>
-  <footer><a class="brand footer-brand" href="#top"><span class="brand-mark">↗</span> куда дальше<span class="brand-dot">.</span></a><span>Идеи для поездки. Решения — за тобой.</span><span>© 2025</span></footer>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="guide-content" id="guideContent" hidden>
+        <div class="destination-banner" id="destinationBanner"></div>
+        
+        <!-- TABS (Added AI Tab) -->
+        <div class="guide-tabs" id="guideTabs">
+          <button class="guide-tab active" data-tab="overview">Обзор</button>
+          <button class="guide-tab" data-tab="places">Места <span class="tab-count" id="placeCount"></span></button>
+          <button class="guide-tab" data-tab="safety">Безопасность <span class="tab-icon">✳</span></button>
+          <button class="guide-tab" data-tab="itinerary">Маршрут</button>
+          <button class="guide-tab" data-tab="budget">Бюджет</button>
+          <button class="guide-tab" data-tab="ai" id="aiTabBtn">Режим ИИ ✦</button>
+        </div>
+
+        <div class="tab-panel" id="tabPanel"></div>
+      </div>
+
+      <div class="closing">
+        <span class="closing-star">✳</span>
+        <p>Не откладывай мир на потом.</p>
+        <a href="#countries">Выбрать страну ↑</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-brand brand"><span class="brand-mark">↗</span> куда дальше<span class="brand-dot">.</span></span>
+    <span>Идеи для поездки. Решения — за тобой.</span>
+    <span>© 2025</span>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="modal-close" id="closeModal">×</button>
+      <h3 id="modalTitle">Вход</h3>
+      
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="loginPassword">Пароль</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="small-action modal-submit">Войти</button>
+        <p class="modal-switch">Нет аккаунта? <a href="#" id="switchToReg">Зарегистрироваться</a></p>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <div class="field">
+          <label for="regName">Имя</label>
+          <input type="text" id="regName" required placeholder="Как тебя зовут?">
+        </div>
+        <div class="field">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="regPassword">Пароль</label>
+          <input type="password" id="regPassword" required minlength="6" placeholder="Минимум 6 символов">
+        </div>
+        <button type="submit" class="small-action modal-submit">Создать аккаунт</button>
+        <p class="modal-switch">Уже есть аккаунт? <a href="#" id="switchToLogin">Войти</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
